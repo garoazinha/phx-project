@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+   phoenix:
+      build:
+         context: .
+      environment:
+         # Variables to connect to our Postgres server.
+         PGUSER: postgres
+         PGPASSWORD: postgres
+         PGPORT: 5432
+         # Hostname of our Postgres container.
+         PGHOST: db
+      ports:
+         - '4000:4000'
+      depends_on:
+         - postgres
+      working_dir: /app
+      command: "mix phx.server"
+      volumes:
+         - .:/app
+      networks:
+         - phx
+
+   postgres:
+      image: postgres:latest
+      environment:
+         - POSTGRES_HOST_AUTH_METHOD=trust
+      restart: always
+      volumes:
+         - pgdata:/var/lib/postgresql/data
+      networks:
+         - phx
+
+volumes:
+   pgdata:
+
+networks:
+   phx: {}
