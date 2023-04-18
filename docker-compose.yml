@@ -5,17 +5,15 @@ services:
       build:
          context: .
       environment:
-         # Variables to connect to our Postgres server.
          PGUSER: postgres
          PGPASSWORD: postgres
-         PGPORT: 5432
-         # Hostname of our Postgres container.
-         PGHOST: db
+         PGHOST: postgres
       ports:
          - '4000:4000'
       depends_on:
          - postgres
       working_dir: /app
+      #entrypoint: /app/entrypoint.sh
       command: "mix phx.server"
       volumes:
          - .:/app
